@@ -68,26 +68,24 @@ while True:
         data = "my server"
     elif data == "8":
         data = "blabla"
-    elif data == "9":
-        break
 
 
+    found = False
     if data in ip_to_host:
         data = ip_to_host[data]
+        found = True
         print(data)
-        try:
-            send_data(client_sock, 2,  data)
-            continue
-        except Exception as e:
-            print(f"error in send - {str(e)}")
-            continue
 
     elif get_key(data, ip_to_host) in ip_to_host:
         data = get_key(data, ip_to_host)
+        found = True
         print(data)
 
+    if found:
         try:
-            send_data(client_sock, 2, data)
+            send_data(server_sock, 2, data)
+            new_data = my_sock.recv(2).decode()
+            send_data(client_sock, 2, new_data)
             continue
         except Exception as e:
             print(f"error in send - {str(e)}")
@@ -95,7 +93,7 @@ while True:
     else:
         try:
             my_sock.connect(("127.0.0.1", 54))
-
+            send_data(server_sock, 2, data)
         except Exception as e:
             my_sock.close()
             print(f"server is down - try again {str(e)}" )

@@ -50,18 +50,18 @@ while True:
     elif data == "9":
         break
 
-    find_data = False
+    found = False
     for key, value in ip_to_host.items():
         if key == data:
             print(value)
-            find_data = True
+            found = True
             break
         elif value == data:
             print(key)
-            find_data = True
+            found = True
             break
 
-    if find_data:
+    if found:
         continue
 
     try:
