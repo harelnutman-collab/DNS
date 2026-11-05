@@ -1,7 +1,7 @@
 import socket
 
 
-def send_data(client, data):
+def send_data(client, data_len_byte, data):
     """
     the func send to the client data from server and length
     :param client: where to send
@@ -11,14 +11,16 @@ def send_data(client, data):
     if type(data) == str:
         data = data.encode()
     try:
-        client.send(data)
+      client.send(str(len(data)).zfill(data_len_byte).encode())
+      client.send(data)
     except Exception as e:
         print(f"error in recv/send try again {str(e)}")
 
 
+
 my_sock = socket.socket()
 
-ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser", "3.3.3.3":"my server"}
+ip_to_host = {"1.1.1.1":"king"}
 
 msg = "choose:\n1 - to get 1.1.1.1 ip host name\n2 - to get 2.2.2.2 ip host name\n3 - to get 3.3.3.3 ip host name\n4 - to get 4.4.4.4 ip host name\n5 - to get the ip of server - 'king'\n6 - to get ip of server - 'loser'\n7 - to get ip of server - 'my server'\n8 - to get ip of server - 'blabla'\n9 - exit:\nchoose: "
 
@@ -28,6 +30,7 @@ except Exception as e:
     print(f"server is down - {str(e)}")
 
 while True:
+
     data = input(msg)
 
 
@@ -63,9 +66,9 @@ while True:
 
     if found:
         continue
-
+    print(f"data - {data}")
     try:
-        send_data(my_sock, data)
+        send_data(my_sock, 2, data)
         data_recv_len = int(my_sock.recv(2).decode())
         data_recv = my_sock.recv(data_recv_len).decode()
         print(data_recv)

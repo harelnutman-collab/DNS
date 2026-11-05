@@ -35,10 +35,11 @@ def get_key(value_to_search, d):
 
 
 server_sock = socket.socket()
-server_sock.bind(("0.0.0.0", 53))
+server_sock.bind(("0.0.0.0", 54))
 server_sock.listen(3)
 
 my_sock = socket.socket()
+
 ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser", "3.3.3.3":"my server", "4.4.4.4":"blabla"}
 
 while True:
@@ -47,28 +48,11 @@ while True:
     print(f"{addr[0]} - connected")
 
     try:
-        data = client_sock.recv(2).decode()
+        data_len = int(client_sock.recv(2).decode())
+        data = client_sock.recv(data_len).decode()
     except Exception as e:
         print(f"error in recv {str(e)}")
         continue
-    if data == "1":
-        data = "1.1.1.1"
-    elif data == "2":
-        data = "2.2.2.2"
-    elif data == "3":
-        data = "3.3.3.3"
-    elif data == "4":
-        data = "4.4.4.4"
-    elif data == "5":
-        data = "king"
-    elif data == "6":
-        data = "loser"
-    elif data == "7":
-        data = "my server"
-    elif data == "8":
-        data = "blabla"
-
-
 
     if data not in ip_to_host.items():
         data = "not exist"
@@ -78,10 +62,10 @@ while True:
         print(data)
         break
 
-    elif get_key(data, ip_to_host) in ip_to_host:
+    else:
         data = get_key(data, ip_to_host)
         print(data)
-        break
+
 
 
     try:
