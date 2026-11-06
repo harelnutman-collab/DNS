@@ -24,19 +24,19 @@ def get_key(value_to_search, d):
     :param d: the dict
     :return: the key of the value
     """
-    key_to_search = ""
+    key_to_search = None
     if type(value_to_search) == str and type(d) == dict:
 
         for key, value in d.items():
             if value == value_to_search:
                 key_to_search = key
                 break
-        return key_to_search
+    return key_to_search
 
 
-server_sock = socket.socket()
-server_sock.bind(("0.0.0.0", 54))
-server_sock.listen(3)
+server_sock_2 = socket.socket()
+server_sock_2.bind(("0.0.0.0", 54))
+server_sock_2.listen(3)
 
 my_sock = socket.socket()
 
@@ -44,7 +44,7 @@ ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser", "3.3.3.3":"my server", "4.4.4
 
 while True:
 
-    client_sock, addr = server_sock.accept()
+    client_sock, addr = server_sock_2.accept()
     print(f"{addr[0]} - connected")
 
     try:

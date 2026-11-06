@@ -24,25 +24,25 @@ def get_key(value_to_search, d):
     :param d: the dict
     :return: the key of the value
     """
-    key_to_search = ""
+    key_to_search = None
     if type(value_to_search) == str and type(d) == dict:
         for key, value in d.items():
             if value == value_to_search:
                 key_to_search = key
                 break
-        return key_to_search
+    return key_to_search
 
 
-server_sock = socket.socket()
-server_sock.bind(("0.0.0.0", 53))
-server_sock.listen(3)
+server_sock_1 = socket.socket()
+server_sock_1.bind(("0.0.0.0", 53))
+server_sock_1.listen(3)
 
 my_sock = socket.socket()
 ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser"}
 
 while True:
 
-    client_sock, addr = server_sock.accept()
+    client_sock, addr = server_sock_1.accept()
     my_sock.connect(("127.0.0.1", 54))
     print(f"{addr[0]} - connected")
 
@@ -59,7 +59,7 @@ while True:
         found = True
         print(data)
 
-    elif get_key(data, ip_to_host) in ip_to_host:
+    elif get_key(data, ip_to_host) in ip_to_host and not get_key(data, ip_to_host):
         data = get_key(data, ip_to_host)
         found = True
         print(data)
@@ -73,7 +73,7 @@ while True:
             continue
     else:
         try:
-            send_data(server_sock, 2, data)
+            send_data(server_sock_1, 2, data)
             new_data_len = int(my_sock.recv(2).decode())
             new_data = my_sock.recv(new_data_len).decode()
             send_data(client_sock, new_data_len, new_data)
