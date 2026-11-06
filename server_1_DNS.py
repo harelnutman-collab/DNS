@@ -40,46 +40,48 @@ server_sock_1.listen(3)
 my_sock = socket.socket()
 ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser"}
 
-while True:
 
+
+while True:
     client_sock, addr = server_sock_1.accept()
     my_sock.connect(("127.0.0.1", 54))
     print(f"{addr[0]} - connected")
 
-    try:
-        data_len = int(client_sock.recv(2).decode())
-        data = client_sock.recv(data_len).decode()
-
-    except Exception as e:
-        print(f"error in recv {str(e)}")
-        continue
-    found = False
-    if data in ip_to_host:
-        data = ip_to_host[data]
-        found = True
-        print(data)
-
-    elif get_key(data, ip_to_host) in ip_to_host and not get_key(data, ip_to_host):
-        data = get_key(data, ip_to_host)
-        found = True
-        print(data)
-    print(f"data - {data}")
-    if found:
+    while True:
         try:
-            send_data(client_sock, 2, data)
-            continue
+            data_len = int(client_sock.recv(2).decode())
+            data = client_sock.recv(data_len).decode()
+
         except Exception as e:
-            print(f"error in send - {str(e)}")
+            print(f"error in recv {str(e)}")
             continue
-    else:
-        try:
-            send_data(server_sock_1, 2, data)
-            new_data_len = int(my_sock.recv(2).decode())
-            new_data = my_sock.recv(new_data_len).decode()
-            send_data(client_sock, new_data_len, new_data)
-        except Exception as e:
-            my_sock.close()
-            print(f"server is down - try again {str(e)}" )
+        found = False
+        if data in ip_to_host:
+            data = ip_to_host[data]
+            found = True
+            print(data)
+
+        elif get_key(data, ip_to_host) in ip_to_host and not get_key(data, ip_to_host):
+            data = get_key(data, ip_to_host)
+            found = True
+            print(data)
+        print(f"data - {data}")
+        if found:
+            try:
+                send_data(client_sock, 2, data)
+                continue
+            except Exception as e:
+                print(f"error in send - {str(e)}")
+                continue
+        else:
+            try:
+                send_data(my_sock, 2, data)
+                new_data_len = int(my_sock.recv(2).decode())
+                new_data = my_sock.recv(new_data_len).decode()
+                send_data(client_sock, new_data_len, new_data)
+            except Exception as e:
+                my_sock.close()
+                print(f"server is down - try again {str(e)}" )
 
 
 

@@ -47,33 +47,34 @@ while True:
     client_sock, addr = server_sock_2.accept()
     print(f"{addr[0]} - connected")
 
-    try:
-        data_len = int(client_sock.recv(2).decode())
-        data = client_sock.recv(data_len).decode()
-    except Exception as e:
-        print(f"error in recv {str(e)}")
-        continue
+    while True:
+        try:
+            data_len = int(client_sock.recv(2).decode())
+            data = client_sock.recv(data_len).decode()
+        except Exception as e:
+            print(f"error in recv {str(e)}")
+            continue
 
-    if data not in ip_to_host.items():
-        data = "not exist"
-        break
-    elif data in ip_to_host:
-        data = str(ip_to_host[data])
-        print(data)
-        break
+        if data not in ip_to_host.items():
+            data = "not exist"
+            break
+        elif data in ip_to_host:
+            data = str(ip_to_host[data])
+            print(data)
+            break
 
-    else:
-        data = get_key(data, ip_to_host)
-        print(data)
+        else:
+            data = get_key(data, ip_to_host)
+            print(data)
 
 
 
-    try:
-        send_data(client_sock, 2, data)
-        continue
-    except Exception as e:
-        print(f"error in send - {str(e)}")
-        continue
+        try:
+            send_data(client_sock, 2, data)
+            continue
+        except Exception as e:
+            print(f"error in send - {str(e)}")
+            continue
 
 
 
