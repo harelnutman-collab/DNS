@@ -55,19 +55,16 @@ while True:
             print(f"error in recv {str(e)}")
             continue
 
-        if data not in ip_to_host.items():
-            data = "not exist"
-            break
-        elif data in ip_to_host:
+        if data in ip_to_host:
             data = str(ip_to_host[data])
             print(data)
-            break
 
-        else:
+        elif get_key(data, ip_to_host) in ip_to_host:
             data = get_key(data, ip_to_host)
             print(data)
 
-
+        else:
+            data = "not exist"
 
         try:
             send_data(client_sock, 2, data)
