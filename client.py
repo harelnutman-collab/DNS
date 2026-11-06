@@ -1,7 +1,5 @@
 import socket
 
-from server_2_DNS import client_sock
-
 
 def send_data(client, data_len_byte, data):
     """
@@ -77,13 +75,14 @@ while True:
             print(data_recv)
             continue
         except Exception as e:
-            my_sock.close()
             print(f"server is down - try again {str(e)}" )
             break
 
 
-    client_sock.close()
+    my_sock.close()
     print("bye bye")
+    break
+
 
 
 

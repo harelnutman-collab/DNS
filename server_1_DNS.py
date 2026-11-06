@@ -43,9 +43,13 @@ ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser"}
 
 
 while True:
-    client_sock, addr = server_sock_1.accept()
-    my_sock.connect(("127.0.0.1", 54))
-    print(f"{addr[0]} - connected")
+    try:
+        client_sock, addr = server_sock_1.accept()
+        my_sock.connect(("127.0.0.1", 54))
+        print(f"{addr[0]} - connected")
+    except Exception as e:
+        print(f"error in connect - {str(e)}")
+        break
 
     while True:
         try:
@@ -55,17 +59,19 @@ while True:
         except Exception as e:
             print(f"error in recv {str(e)}")
             continue
+
         found = False
+
         if data in ip_to_host:
-            data = ip_to_host[data]
+            data = str(ip_to_host[data])
             found = True
             print(data)
 
-        elif get_key(data, ip_to_host) in ip_to_host and not get_key(data, ip_to_host):
+        elif get_key(data, ip_to_host) in ip_to_host:
             data = get_key(data, ip_to_host)
             found = True
             print(data)
-        print(f"data - {data}")
+
         if found:
             try:
                 send_data(client_sock, 2, data)
@@ -78,12 +84,12 @@ while True:
                 send_data(my_sock, 2, data)
                 new_data_len = int(my_sock.recv(2).decode())
                 new_data = my_sock.recv(new_data_len).decode()
-                send_data(client_sock, new_data_len, new_data)
+                send_data(client_sock, 2, new_data)
             except Exception as e:
-                my_sock.close()
                 print(f"server is down - try again {str(e)}" )
+                break
 
-
+    my_sock.close()
 
 
 

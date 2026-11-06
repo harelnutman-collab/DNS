@@ -43,9 +43,12 @@ my_sock = socket.socket()
 ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser", "3.3.3.3":"my server", "4.4.4.4":"blabla"}
 
 while True:
-
-    client_sock, addr = server_sock_2.accept()
-    print(f"{addr[0]} - connected")
+    try:
+        client_sock, addr = server_sock_2.accept()
+        print(f"{addr[0]} - connected")
+    except Exception as e:
+        print(f"error in connect - {str(e)}")
+        break
 
     while True:
         try:
@@ -53,7 +56,8 @@ while True:
             data = client_sock.recv(data_len).decode()
         except Exception as e:
             print(f"error in recv {str(e)}")
-            continue
+            client_sock.close()
+            break
 
         if data in ip_to_host:
             data = str(ip_to_host[data])
@@ -71,7 +75,7 @@ while True:
             continue
         except Exception as e:
             print(f"error in send - {str(e)}")
-            continue
+            break
 
 
 
