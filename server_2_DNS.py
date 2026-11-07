@@ -65,11 +65,11 @@ while True:
 
         elif get_key(data, ip_to_host) in ip_to_host:
             data = get_key(data, ip_to_host)
-            print(data)
 
         else:
             data = "not exist"
 
+        print(data)
         try:
             send_data(client_sock, 2, data)
             continue

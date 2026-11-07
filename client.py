@@ -72,13 +72,13 @@ while True:
             send_data(my_sock, 2, data)
             data_recv_len = int(my_sock.recv(2).decode())
             data_recv = my_sock.recv(data_recv_len).decode()
-            print(data_recv)
-            ip_to_host[data] = data_recv
-            continue
         except Exception as e:
             print(f"server is down - try again {str(e)}" )
             break
 
+        print(data_recv)
+        if not data_recv == "not exist":
+            ip_to_host[data] = data_recv
 
 
     my_sock.close()
