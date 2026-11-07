@@ -42,10 +42,10 @@ ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser"}
 
 
 
+my_sock.connect(("127.0.0.1", 54))
 while True:
     try:
         client_sock, addr = server_sock_1.accept()
-        my_sock.connect(("127.0.0.1", 54))
         print(f"{addr[0]} - connected")
     except Exception as e:
         print(f"error in connect - {str(e)}")
