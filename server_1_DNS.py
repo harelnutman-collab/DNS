@@ -58,6 +58,7 @@ while True:
 
         except Exception as e:
             print(f"error in recv {str(e)}")
+            client_sock.close()
             break
 
         found = False
@@ -87,6 +88,7 @@ while True:
                 send_data(client_sock, 2, new_data)
             except Exception as e:
                 print(f"server is down/ error in recv - {str(e)}" )
+                client_sock.close()
                 break
 
             print(new_data)
@@ -95,9 +97,6 @@ while True:
 
 
 
-
-
-    my_sock.close()
 
 
 
