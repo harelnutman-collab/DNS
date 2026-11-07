@@ -58,7 +58,7 @@ while True:
 
         except Exception as e:
             print(f"error in recv {str(e)}")
-            continue
+            break
 
         found = False
 
@@ -85,9 +85,14 @@ while True:
                 new_data_len = int(my_sock.recv(2).decode())
                 new_data = my_sock.recv(new_data_len).decode()
                 send_data(client_sock, 2, new_data)
+                print(new_data)
+                ip_to_host[data] = new_data
             except Exception as e:
-                print(f"server is down - try again {str(e)}" )
+                print(f"server is down/ error in recv - {str(e)}" )
                 break
+
+
+
 
     my_sock.close()
 

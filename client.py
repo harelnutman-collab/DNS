@@ -29,7 +29,7 @@ while True:
         my_sock.connect(("127.0.0.1", 53))
     except Exception as e:
         print(f"server is down - {str(e)}")
-        continue
+        break
 
     while True:
 
@@ -73,10 +73,12 @@ while True:
             data_recv_len = int(my_sock.recv(2).decode())
             data_recv = my_sock.recv(data_recv_len).decode()
             print(data_recv)
+            ip_to_host[data] = data_recv
             continue
         except Exception as e:
             print(f"server is down - try again {str(e)}" )
             break
+
 
 
     my_sock.close()
