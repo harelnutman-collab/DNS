@@ -36,7 +36,7 @@ while True:
         data = input(msg)
 
         if data == "1":
-            data  = input("enter ip to search")
+            data  = input("enter ip to search ")
             parts = data.split(".")
 
             try:
