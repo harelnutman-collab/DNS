@@ -43,20 +43,24 @@ while True:
                 one = int(parts[0])
                 two = int(parts[1])
                 three = int(parts[2])
-                four = int(parts[2])
+                four = int(parts[3])
             except Exception as e:
                 print(f"error in casting - {str(e)}")
                 print("not legal ip")
                 continue
 
-            if not (0 <= one < 256 and 0 <= two < 256 and 0 <= three < 256 and 0 <= four < 256):
+            if not (0 <= one < 256 and 0 <= two < 256 and 0 <= three < 256 and 0 <= four < 256) or len(parts) != 4:
                 print("error in the ip try again")
                 continue
 
         elif data == "2":
-            data  = input("enter domain to search")
+            data  = input("enter domain to search ")
         elif data == "9":
             break
+
+        else:
+            print("you chose something illegal ")
+
 
         found = False
         for key, value in ip_to_host.items():
