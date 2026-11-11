@@ -59,8 +59,8 @@ while True:
             break
 
         else:
-            print("you chose something illegal ")
-
+            print("you chose something illegal try again")
+            continue
 
         found = False
         for key, value in ip_to_host.items():
