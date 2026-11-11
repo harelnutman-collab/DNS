@@ -22,7 +22,7 @@ my_sock = socket.socket()
 
 ip_to_host = {"1.1.1.1":"king"}
 
-msg = "choose:\n1 - to get 1.1.1.1 ip host name\n2 - to get 2.2.2.2 ip host name\n3 - to get 3.3.3.3 ip host name\n4 - to get 4.4.4.4 ip host name\n5 - to get the ip of server - 'king'\n6 - to get ip of server - 'loser'\n7 - to get ip of server - 'my server'\n8 - to get ip of server - 'blabla'\n9 - exit:\nchoose: "
+msg = "choose:\n1 - ip\n2 - domain\n9 - exit:\nchoose: "
 
 while True:
     try:
@@ -36,21 +36,25 @@ while True:
         data = input(msg)
 
         if data == "1":
-            data  = "1.1.1.1"
+            data  = input("enter ip to search")
+            parts = data.split(".")
+
+            try:
+                one = int(parts[0])
+                two = int(parts[1])
+                three = int(parts[2])
+                four = int(parts[2])
+            except Exception as e:
+                print(f"error in casting - {str(e)}")
+                print("not legal ip")
+                continue
+
+            if not (0 <= one < 256 and 0 <= two < 256 and 0 <= three < 256 and 0 <= four < 256):
+                print("error in the ip try again")
+                continue
+
         elif data == "2":
-            data = "2.2.2.2"
-        elif data == "3":
-            data = "3.3.3.3"
-        elif data == "4":
-            data = "4.4.4.4"
-        elif data == "5":
-            data = "king"
-        elif data == "6":
-            data = "loser"
-        elif data == "7":
-            data = "my server"
-        elif data == "8":
-            data = "blabla"
+            data  = input("enter domain to search")
         elif data == "9":
             break
 
@@ -67,7 +71,6 @@ while True:
 
         if found:
             continue
-        print(f"data - {data}")
         try:
             send_data(my_sock, 2, data)
             data_recv_len = int(my_sock.recv(2).decode())
