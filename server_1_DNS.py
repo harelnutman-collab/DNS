@@ -53,6 +53,8 @@ while True:
 
     while True:
         try:
+            first_data_len = int(client_sock.recv(2).decode())
+            first_data = client_sock.recv(first_data_len).decode()
             data_len = int(client_sock.recv(2).decode())
             data = client_sock.recv(data_len).decode()
 
@@ -62,16 +64,17 @@ while True:
             break
 
         found = False
+        if first_data == '1':
+            if data in ip_to_host:
+                data = str(ip_to_host[data])
+                found = True
+                print(data)
 
-        if data in ip_to_host:
-            data = str(ip_to_host[data])
-            found = True
-            print(data)
-
-        elif get_key(data, ip_to_host) in ip_to_host:
-            data = get_key(data, ip_to_host)
-            found = True
-            print(data)
+        elif first_data == '2':
+            if get_key(data, ip_to_host) in ip_to_host:
+                data = get_key(data, ip_to_host)
+                found = True
+                print(data)
 
         if found:
             try:
@@ -82,6 +85,7 @@ while True:
                 continue
         else:
             try:
+                send_data(my_sock, 2, first_data)
                 send_data(my_sock, 2, data)
                 new_data_len = int(my_sock.recv(2).decode())
                 new_data = my_sock.recv(new_data_len).decode()
@@ -93,7 +97,10 @@ while True:
 
             print(new_data)
             if not new_data == "not exist":
-                ip_to_host[data] = new_data
+                if first_data == '1':
+                    ip_to_host[data] = new_data
+                else:
+                    ip_to_host[new_data] = data
 
 
 

@@ -33,9 +33,9 @@ while True:
 
     while True:
 
-        data = input(msg)
+        first_data = input(msg)
 
-        if data == "1":
+        if first_data == "1":
             data  = input("enter ip to search ")
             parts = data.split(".")
 
@@ -53,9 +53,9 @@ while True:
                 print("error in the ip try again")
                 continue
 
-        elif data == "2":
+        elif first_data == "2":
             data  = input("enter domain to search ")
-        elif data == "9":
+        elif first_data == "9":
             break
 
         else:
@@ -63,19 +63,22 @@ while True:
             continue
 
         found = False
-        for key, value in ip_to_host.items():
-            if key == data:
-                print(value)
-                found = True
-                break
-            elif value == data:
-                print(key)
-                found = True
-                break
+        if first_data == '1':
+            for key, value in ip_to_host.items():
+                if key == data:
+                    print(value)
+                    found = True
+                    break
+            for key, value in ip_to_host.items():
+                if value == data:
+                    print(key)
+                    found = True
+                    break
 
         if found:
             continue
         try:
+            send_data(my_sock, 1, first_data)
             send_data(my_sock, 2, data)
             data_recv_len = int(my_sock.recv(2).decode())
             data_recv = my_sock.recv(data_recv_len).decode()
@@ -83,9 +86,13 @@ while True:
             print(f"server is down - try again {str(e)}" )
             break
 
-        print(data_recv)
-        if not data_recv == "not exist":
+
+        if data_recv == "not exist":
+            print(data_recv)
+        elif first_data == '1':
             ip_to_host[data] = data_recv
+        elif first_data == '2':
+            ip_to_host[first_data] = data
 
 
     my_sock.close()

@@ -52,6 +52,8 @@ while True:
 
     while True:
         try:
+            first_data_len = int(client_sock.recv(1).decode())
+            first_data = client_sock.recv(first_data_len).decode()
             data_len = int(client_sock.recv(2).decode())
             data = client_sock.recv(data_len).decode()
         except Exception as e:
@@ -59,13 +61,13 @@ while True:
             client_sock.close()
             break
 
-        if data in ip_to_host:
-            data = str(ip_to_host[data])
-            print(data)
-
-        elif get_key(data, ip_to_host) in ip_to_host:
-            data = get_key(data, ip_to_host)
-
+        if first_data == '1':
+            if data in ip_to_host:
+                data = str(ip_to_host[data])
+                print(data)
+        elif first_data == '2':
+            if get_key(data, ip_to_host) in ip_to_host:
+                data = get_key(data, ip_to_host)
         else:
             data = "not exist"
 
