@@ -1,4 +1,6 @@
 import socket
+
+
 def send_data(client, data_len_byte, data):
     """
     the func send to the client data from server and length
@@ -53,7 +55,7 @@ while True:
 
     while True:
         try:
-            first_data_len = int(client_sock.recv(2).decode())
+            first_data_len = int(client_sock.recv(1).decode())
             first_data = client_sock.recv(first_data_len).decode()
             data_len = int(client_sock.recv(2).decode())
             data = client_sock.recv(data_len).decode()
@@ -66,7 +68,7 @@ while True:
         found = False
         if first_data == '1':
             if data in ip_to_host:
-                data = str(ip_to_host[data])
+                data = ip_to_host[data]
                 found = True
                 print(data)
 
@@ -85,7 +87,7 @@ while True:
                 continue
         else:
             try:
-                send_data(my_sock, 2, first_data)
+                send_data(my_sock, 1, first_data)
                 send_data(my_sock, 2, data)
                 new_data_len = int(my_sock.recv(2).decode())
                 new_data = my_sock.recv(new_data_len).decode()

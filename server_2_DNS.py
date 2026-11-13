@@ -1,4 +1,6 @@
 import socket
+
+
 def send_data(client, data_len_byte, data):
     """
     the func send to the client data from server and length
@@ -39,7 +41,7 @@ server_sock_2.bind(("0.0.0.0", 54))
 server_sock_2.listen(3)
 
 my_sock = socket.socket()
-
+new_data = "not exist"
 ip_to_host = {"1.1.1.1":"king", "2.2.2.2":"loser", "3.3.3.3":"my server", "4.4.4.4":"blabla"}
 
 while True:
@@ -63,17 +65,14 @@ while True:
 
         if first_data == '1':
             if data in ip_to_host:
-                data = str(ip_to_host[data])
-                print(data)
+                new_data = ip_to_host[data]
         elif first_data == '2':
             if get_key(data, ip_to_host) in ip_to_host:
-                data = get_key(data, ip_to_host)
-        else:
-            data = "not exist"
+                new_data = get_key(data, ip_to_host)
 
-        print(data)
+        print(new_data)
         try:
-            send_data(client_sock, 2, data)
+            send_data(client_sock, 2, new_data)
             continue
         except Exception as e:
             print(f"error in send - {str(e)}")

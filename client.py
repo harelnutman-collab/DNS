@@ -86,13 +86,12 @@ while True:
             print(f"server is down - try again {str(e)}" )
             break
 
-
-        if data_recv == "not exist":
-            print(data_recv)
-        elif first_data == '1':
-            ip_to_host[data] = data_recv
-        elif first_data == '2':
-            ip_to_host[first_data] = data
+        print(data_recv)
+        if not data_recv == "not exist":
+            if first_data == '1':
+                ip_to_host[data] = data_recv
+            elif first_data == '2':
+                ip_to_host[data] = data
 
 
     my_sock.close()
